@@ -94,8 +94,8 @@
   </PropertyGroup>
   <PropertyGroup>
     <PostBuildEvent>if "%25COMPUTERNAME%25" == "MAURICE-PC" (
-    copy /y "$(TargetPath)" "D:\Games\SteamLibrary\SteamApps\common\Call of Duty Black Ops II\Plugins\"
-    copy /y "$(OutDir)\Irony.dll" "D:\Games\SteamLibrary\SteamApps\common\Call of Duty Black Ops II\Plugins\$(SolutionName)\"
+    copy /y "$(TargetPath)" "D:\Games\SteamLibrary\SteamApps\common\Call of Duty Black Ops II\Plugins\$(SolutionName)\"
+    copy /y "$(TargetDir)Irony.dll" "D:\Games\SteamLibrary\SteamApps\common\Call of Duty Black Ops II\Plugins\$(SolutionName)\"
 )</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
