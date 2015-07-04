@@ -1,0 +1,4 @@
+namespace Script
+{
+	void Apply();
+};

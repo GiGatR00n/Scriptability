@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Export">
+      <UniqueIdentifier>{1249522e-f64f-44b1-9324-41ff7e746c1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Struct">
+      <UniqueIdentifier>{3b5a2c98-3fd5-4cca-8ae9-2483f5634c4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{a73bcd9e-58a1-45d4-a4a5-a76c2a9e0ddb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Global">
+      <UniqueIdentifier>{9ef29cc5-b3a5-469c-b57d-e61bbac742bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Addresses">
+      <UniqueIdentifier>{7365c5f5-57d3-434a-987f-5cd7c9a80c51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Patches">
+      <UniqueIdentifier>{03d30831-094f-47f6-b82b-4f0bbf350336}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Functions">
+      <UniqueIdentifier>{6b1a98d0-564a-4806-86a7-732972cab035}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Export\Export.cpp">
+      <Filter>Export</Filter>
+    </ClCompile>
+    <ClCompile Include="Global\Global.cpp">
+      <Filter>Global</Filter>
+    </ClCompile>
+    <ClCompile Include="Global\Main.cpp">
+      <Filter>Global</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\Hooking.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\Patterns.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\VariadicString.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Addresses\Addresses.cpp">
+      <Filter>Addresses</Filter>
+    </ClCompile>
+    <ClCompile Include="Functions\Functions.cpp">
+      <Filter>Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\FileIO.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Patches\Script.cpp">
+      <Filter>Patches</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Export\Export.h">
+      <Filter>Export</Filter>
+    </ClInclude>
+    <ClInclude Include="Global\Global.h">
+      <Filter>Global</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Hooking.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Patterns.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\VariadicString.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="STDInclude.h" />
+    <ClInclude Include="Struct\T6.h">
+      <Filter>Struct</Filter>
+    </ClInclude>
+    <ClInclude Include="Addresses\Addresses.h">
+      <Filter>Addresses</Filter>
+    </ClInclude>
+    <ClInclude Include="Patches\Patches.h">
+      <Filter>Patches</Filter>
+    </ClInclude>
+    <ClInclude Include="Functions\Functions.h">
+      <Filter>Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\FileIO.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
