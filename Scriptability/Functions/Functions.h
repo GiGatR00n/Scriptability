@@ -16,6 +16,8 @@ typedef unsigned int(__cdecl * Scr_LoadScriptInternal_t)(scriptInstance_t inst, 
 typedef int(__cdecl * Scr_GetFunctionHandle_t)(scriptInstance_t inst, const char *filename, const char *name, unsigned int *checksum, bool errorIfMissing);
 typedef int(__cdecl * GScr_LoadScriptAndLabel_t)(scriptInstance_t inst, const char *filename, const char *label, int bEnforceExists, bool errorIfMissing);
 
+typedef void(__cdecl * G_ShutdownGame_t)(int freeScripts);
+
 class Functions
 {
 public:
@@ -36,6 +38,8 @@ public:
 	static Scr_FreeThread_t Scr_FreeThread;
 	static Scr_LoadScriptInternal_t Scr_LoadScriptInternal;
 	static GScr_LoadScriptAndLabel_t GScr_LoadScriptAndLabel;
+
+	static G_ShutdownGame_t G_ShutdownGame;
 
 	static void Assign();
 	static void AssignFromPattern();

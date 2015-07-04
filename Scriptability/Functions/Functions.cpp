@@ -16,6 +16,8 @@ Scr_FreeThread_t Functions::Scr_FreeThread = 0;
 Scr_LoadScriptInternal_t Functions::Scr_LoadScriptInternal = 0;
 GScr_LoadScriptAndLabel_t Functions::GScr_LoadScriptAndLabel = 0;
 
+G_ShutdownGame_t Functions::G_ShutdownGame = 0;
+
 void Functions::Assign()
 {
 	Functions::AssignFromPattern();
@@ -83,6 +85,8 @@ void Functions::AssignFromPattern()
 	Functions::Scr_LoadScriptInternal = (Scr_LoadScriptInternal_t)Patterns::FindPattern((uint8_t*)"\x81\xEC\x00\x00\x00\x00\x53\x55\x8B\xAC\x24\x00\x00\x00\x00\x68\x00\x00\x00\x00", "xx????xxxxx????x????");
 	Functions::GScr_LoadScriptAndLabel = (GScr_LoadScriptAndLabel_t)Patterns::FindPattern((uint8_t*)"\x8B\x44\x24\x08\x81\xEC\x00\x00\x00\x00\x56\xB9\x00\x00\x00\x00", "xxxxxx????xx????");
 	Functions::Scr_FreeThread = (Scr_FreeThread_t)Patterns::FindPattern((uint8_t*)"\x0F\xB7\x44\x24\x00\x89\x44\x24\x08", "xxxx?xxxx");
+
+	Functions::G_ShutdownGame = (G_ShutdownGame_t)Patterns::FindPattern((uint8_t*)"\xF3\x0F\x10\x05\x00\x00\x00\x00\xF3\x0F\x10\x0D\x00\x00\x00\x00\x53\xB9\x00\x00\x00\x00", "xxxx????xxxx????xx????");
 }
 
 bool Functions::FS_FileExists(const char* file)

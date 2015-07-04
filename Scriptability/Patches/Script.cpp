@@ -202,6 +202,17 @@ namespace Script
 		__asm jmp loadGameType_hook._Original
 	}
 
+	Hook::Stomp g_ShutdownGame_hook;
+	void G_ShutdownGame_Stub(int freeScripts)
+	{
+		//if (freeScripts)
+		scripParseTreePool.clear();
+
+		g_ShutdownGame_hook.ReleaseHook();
+		Functions::G_ShutdownGame(freeScripts);
+		g_ShutdownGame_hook.InstallHook();
+	}
+
 	void Apply()
 	{
 		QCALL(Addresses::scriptParseTreeLoad1_loc, Scr_LoadScriptInternal_Stub, QPATCH_CALL);
@@ -218,6 +229,7 @@ namespace Script
 		loadGameType_hook.Initialize(Addresses::loadGameType_loc, LoadGameType_Stub);
 		loadGameType_hook.InstallHook();
 
-		// TODO: Hook exitgame to clear script cache
+		g_ShutdownGame_hook.Initialize((DWORD)Functions::G_ShutdownGame, G_ShutdownGame_Stub);
+		g_ShutdownGame_hook.InstallHook();
 	}
 }
