@@ -1,5 +1,7 @@
 #include "..\STDInclude.h"
 
+Com_Error_t Functions::Com_Error = 0;
+
 DB_FindXAssetHeader_t Functions::DB_FindXAssetHeader = 0;
 
 FS_FreeFile_t Functions::FS_FreeFile = 0;
@@ -76,6 +78,8 @@ void Functions::Assign()
 void Functions::AssignFromPattern()
 {
 	// TODO: Add patterns
+	Functions::Com_Error = (Com_Error_t)Patterns::FindPattern((uint8_t*)"\x53\x56\x33\xDB\x53\xE8\x00\x00\x00\x00\x8B\x74\x24\x10", "xxxxxx????xxxx");
+
 	Functions::FS_ReadFile = (FS_ReadFile_t)Patterns::FindPattern((uint8_t*)"\x53\x56\x8B\x74\x24\x0C\x85\xF6", "xxxxxxxx");
 	Functions::FS_FreeFileList = (FS_FreeFileList_t)Patterns::FindPattern((uint8_t*)"\x8B\x44\x24\x04\x85\xC0\x74\x0A\x8B\x40\xFC", "xxxxxxxxxxx");
 	Functions::FS_ListFiles = (FS_ListFiles_t)Patterns::FindPattern((uint8_t*)"\x8B\x44\x24\x14\x8B\x4C\x24\x10\x8B\x54\x24\x0C\x50\x8B\x44\x24\x0C\x51\x8B\x4C\x24\x0C\x52\x8B\x15\x00\x00\x00\x00", "xxxxxxxxxxxxxxxxxxxxxxxxx????");

@@ -8,6 +8,8 @@ DWORD Addresses::scriptParseTreeLoad4_loc = 0;
 DWORD Addresses::loadGameTypeScript_loc = 0;
 DWORD Addresses::loadGameType_loc = 0;
 
+DWORD Addresses::scriptErrorParam_loc = 0;
+
 void Addresses::Assign()
 {
 	Addresses::AssignFromPattern();
@@ -50,4 +52,6 @@ void Addresses::AssignFromPattern()
 	Addresses::scriptParseTreeLoad2_loc = (DWORD)Patterns::FindPattern((uint8_t*)"\x6A\x30\xE8\x00\x00\x00\x00\x83\xC4\x24", "xxx????xxx") + 2;
 	Addresses::scriptParseTreeLoad3_loc = (DWORD)Patterns::FindPattern((uint8_t*)"\x6A\x30\xE8\x00\x00\x00\x00\x8B\x68\x08", "xxx????xxx") + 2;
 	Addresses::scriptParseTreeLoad4_loc = (DWORD)Patterns::FindPattern((uint8_t*)"\x6A\x30\xE8\x00\x00\x00\x00\x8B\x70\x08", "xxx????xxx") + 2;
+
+	Addresses::scriptErrorParam_loc = (DWORD)Patterns::FindPattern((uint8_t*)"\x6A\x00\xE8\x00\x00\x00\x00\x83\xC4\x10\x5F\x5E\x33\xC0", "xxx????xxxxxxx") + 1;
 }

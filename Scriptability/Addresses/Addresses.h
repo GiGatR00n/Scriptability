@@ -9,6 +9,8 @@ public:
 	static DWORD loadGameTypeScript_loc;
 	static DWORD loadGameType_loc;
 
+	static DWORD scriptErrorParam_loc;
+
 	static void Assign();
 	static void AssignFromPattern();
 };

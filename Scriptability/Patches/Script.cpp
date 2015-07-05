@@ -1,8 +1,5 @@
 #include "..\STDInclude.h"
 
-void CompileGSCFile(const char* file, std::string &buffer);
-void CompileGSCFile(FILE* fp, const char* relativePath, std::string &buffer, bool devMode);
-
 namespace Script
 {
 	struct ScriptParseTreeEntry
@@ -23,8 +20,9 @@ namespace Script
 	std::vector<ScriptHandle> scriptHandles;
 	std::map<std::string, ScriptParseTreeEntry> scripParseTreePool;
 
-	void RunCmdSync(const char* cmd, const char* workingDir, char* cmdline)
+	DWORD RunCmdSync(const char* cmd, const char* workingDir, char* cmdline)
 	{
+		DWORD result = -1;
 		STARTUPINFO si;
 		PROCESS_INFORMATION pi;
 
@@ -37,17 +35,20 @@ namespace Script
 			WaitForSingleObject(pi.hProcess, INFINITE);
 			CloseHandle(pi.hProcess);
 			CloseHandle(pi.hThread);
+			GetExitCodeProcess(pi.hProcess, &result);
 		}
+
+		return result;
 	}
 
 	// Kinda ugly, but that's the most efficient way for now.
-	void CompileGSCFile(const char* file, std::string &buffer)
+	void CompileGSCFile(const char* rel, const char* file, std::string &buffer)
 	{
 		buffer.clear();
 
 		std::string compiler = va("%s/Plugins/Scriptability/Compiler.exe", FileIO::GetCurrentDir());
 		std::string workingDir = va("%s/Plugins/Scriptability/", FileIO::GetCurrentDir());
-		std::string cmdLine = va("compile \"%s\" temp.dat", file);
+		std::string cmdLine = va("compile \"%s\" \"%s\" temp.dat", rel, file);
 
 		RunCmdSync(compiler.data(), workingDir.data(), (char*)cmdLine.data());
 
@@ -91,11 +92,14 @@ namespace Script
 				char file[256] = { 0 };
 				Functions::FS_GetFileOsPath(name, file);
 
-				CompileGSCFile(file, entry->buffer);
+				CompileGSCFile(name, file, entry->buffer);
 
-				if (!entry->buffer.size())
+				if (entry->buffer.size() < 4 || *(DWORD*)entry->buffer.data() != 0x43534780)
 				{
-					Global::Dependency::Import::Com_Printf(0, "Compilation failed. Couldn't read file.");
+					std::string message = entry->buffer;
+					scripParseTreePool.clear();
+
+					Functions::Com_Error(ERR_SERVERDISCONNECT, "Script compile error!\n\nFailed to compile '%s'\n%s", name, message.data());
 				}
 			}
 
@@ -215,6 +219,7 @@ namespace Script
 
 	void Apply()
 	{
+		// Allow raw script loading
 		QCALL(Addresses::scriptParseTreeLoad1_loc, Scr_LoadScriptInternal_Stub, QPATCH_CALL);
 		QCALL(Addresses::scriptParseTreeLoad2_loc, Scr_LoadScriptInternal_Stub, QPATCH_CALL);
 		QCALL(Addresses::scriptParseTreeLoad3_loc, Scr_LoadScriptInternal_Stub, QPATCH_CALL);
@@ -223,13 +228,19 @@ namespace Script
 		// No support for zombies right now
 		if (Global::Game::Type == GAME_TYPE_ZM) return;
 
+		// Load custom scripts
 		loadGameTypeScript_hook.Initialize(Addresses::loadGameTypeScript_loc, LoadGameTypeScript_Stub);
 		loadGameTypeScript_hook.InstallHook();
 
+		// Execute custom scripts
 		loadGameType_hook.Initialize(Addresses::loadGameType_loc, LoadGameType_Stub);
 		loadGameType_hook.InstallHook();
 
+		// Clear scriptpool on game shutdown
 		g_ShutdownGame_hook.Initialize((DWORD)Functions::G_ShutdownGame, G_ShutdownGame_Stub);
 		g_ShutdownGame_hook.InstallHook();
+
+		// Patch script error handler
+		*(BYTE*)Addresses::scriptErrorParam_loc = ERR_SERVERDISCONNECT;
 	}
 }

@@ -1,4 +1,6 @@
 // Types
+typedef void(__cdecl * Com_Error_t)(errorParm_t code, const char *fmt, ...);
+
 typedef XAssetHeader(__cdecl * DB_FindXAssetHeader_t)(XAssetType type, const char *name, bool errorIfMissing, int waitTime);
 
 typedef int(__cdecl * FS_FOpenFileByMode_t)(const char *qpath, int *f, fsMode_t mode);
@@ -23,6 +25,8 @@ class Functions
 public:
 
 	// Functions
+	static Com_Error_t Com_Error;
+
 	static DB_FindXAssetHeader_t DB_FindXAssetHeader;
 
 	static FS_FreeFile_t FS_FreeFile;

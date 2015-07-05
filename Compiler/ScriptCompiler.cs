@@ -180,15 +180,17 @@ namespace Compiler
             }
         }
 
-        public bool Init()
+        public bool Init(string rel)
         {
             if (Tree.ParserMessages.Count > 0)
             {
-                MessageBox.Show(String.Format("Bad syntax in line {0}.", Tree.ParserMessages[0].Location.Line));
+                CompiledPub.Clear();
+                AddString(String.Format("Bad syntax in line {0}.", Tree.ParserMessages[0].Location.Line));
                 return false;
             }
+
             CompiledPub.AddRange(new byte[64]);
-            AddString("maps/mp/_zm_modding.gsc");
+            AddString(rel);
             PrepareStrings(Tree.Root);
             int includesNodeIndex = Tree.Root.ChildNodes.FindIndex(e => e.Term.Name == "includes");
             int functionsNodeIndex = Tree.Root.ChildNodes.FindIndex(e => e.Term.Name == "functions");
