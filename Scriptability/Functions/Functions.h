@@ -16,7 +16,7 @@ typedef unsigned short(__cdecl * Scr_ExecThread_t)(scriptInstance_t inst, int ha
 typedef void(__cdecl * Scr_FreeThread_t)(scriptInstance_t inst, unsigned __int16 handle);
 typedef unsigned int(__cdecl * Scr_LoadScriptInternal_t)(scriptInstance_t inst, const char *filename);
 typedef int(__cdecl * Scr_GetFunctionHandle_t)(scriptInstance_t inst, const char *filename, const char *name, unsigned int *checksum, bool errorIfMissing);
-typedef int(__cdecl * GScr_LoadScriptAndLabel_t)(scriptInstance_t inst, const char *filename, const char *label, int bEnforceExists, bool errorIfMissing);
+typedef int(__cdecl * GScr_LoadScriptAndLabel_t)(scriptInstance_t inst, const char *filename, const char *label, int* bEnforceExists, bool errorIfMissing);
 
 typedef void(__cdecl * G_ShutdownGame_t)(int freeScripts);
 

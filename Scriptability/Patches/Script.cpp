@@ -13,8 +13,9 @@ namespace Script
 	{
 		std::string name;
 		std::string function;
-		int handle;
 		bool loaded;
+		int handle;
+		int handleLoaded;
 	};
 
 	std::vector<ScriptHandle> scriptHandles;
@@ -161,13 +162,13 @@ namespace Script
 
 			if (Functions::Scr_LoadScriptInternal(SCRIPTINSTANCE_SERVER, handle->name.data()))
 			{
-				handle->handle = Functions::GScr_LoadScriptAndLabel(SCRIPTINSTANCE_SERVER, handle->name.data(), handle->function.data(), 0, true);
+				handle->handle = Functions::GScr_LoadScriptAndLabel(SCRIPTINSTANCE_SERVER, handle->name.data(), handle->function.data(), &handle->handleLoaded, true);
 
 				// Load main function, if init doesn't exist
-				if (!handle->handle)
+				if (!handle->handleLoaded)
 				{
 					handle->function = "main";
-					handle->handle = Functions::GScr_LoadScriptAndLabel(SCRIPTINSTANCE_SERVER, handle->name.data(), handle->function.data(), 0, true);
+					handle->handle = Functions::GScr_LoadScriptAndLabel(SCRIPTINSTANCE_SERVER, handle->name.data(), handle->function.data(), &handle->handleLoaded, true);
 				}
 
 				handle->loaded = true;
@@ -194,7 +195,7 @@ namespace Script
 			if (!scriptHandle->loaded) continue;
 
 			// Execute handle if found
-			if (scriptHandle->handle)
+			if (scriptHandle->handleLoaded)
 			{
 				int threadhandle = Functions::Scr_ExecThread(SCRIPTINSTANCE_SERVER, scriptHandle->handle, 0);
 				Functions::Scr_FreeThread(SCRIPTINSTANCE_SERVER, threadhandle);
