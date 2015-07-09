@@ -49,4 +49,6 @@ public:
 	static void AssignFromPattern();
 
 	static bool FS_FileExists(const char* file);
+
+	static void FS_VectoredListFiles(const char *path, const char *extension, FsListBehavior_e behavior, std::vector<std::string> &vector, bool absolute = false, bool append = true);
 };

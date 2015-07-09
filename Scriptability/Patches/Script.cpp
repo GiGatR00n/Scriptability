@@ -115,31 +115,48 @@ namespace Script
 		return header;
 	}
 
+	std::vector<std::string> GetScriptList()
+	{
+		std::vector<std::string> scriptList;
+		const char* searchPath = (Global::Game::Type == GAME_TYPE_MP ? "scripts/mp/" : "scripts/zm/");
+
+		// Game specific
+		Functions::FS_VectoredListFiles(searchPath, "gsc", FS_LIST_PURE_ONLY, scriptList, true);
+		Functions::FS_VectoredListFiles(searchPath, "csc", FS_LIST_PURE_ONLY, scriptList, true);
+
+		// Both, ZM and MP
+		Functions::FS_VectoredListFiles("scripts/", "gsc", FS_LIST_PURE_ONLY, scriptList, true);
+		Functions::FS_VectoredListFiles("scripts/", "csc", FS_LIST_PURE_ONLY, scriptList, true);
+
+		// TODO: Add support mods using fs_game and probably mods in sub folders
+		return scriptList;
+	}
+
 	void LoadCustomScripts()
 	{
-		int amount = 0;
-		const char** list = Functions::FS_ListFiles("scripts/", "gsc", FS_LIST_PURE_ONLY, &amount, 0xC);
+		std::vector<std::string> scriptList = GetScriptList();
 
-		Global::Dependency::Import::Com_Printf(0, "Loading scripts (%d):", amount);
+		Global::Dependency::Import::Com_Printf(0, "Loading scripts (%d):", scriptList.size());
 
 		if (scriptHandles.size() > 0) scriptHandles.clear();
 
-		for (int i = 0; i < amount; i++)
+		for (auto script : scriptList)
 		{
-			if (strlen(list[i]) < 5 || list[i][strlen(list[i]) - 4] != '.')
+			const char* entry = script.data();
+			if (strlen(entry) < 5 || entry[strlen(entry) - 4] != '.')
 			{
 				continue;
 			}
 			else
 			{
-				char* entryPtr = (char*)list[i];
+				char* entryPtr = (char*)entry;
 				entryPtr[strlen(entryPtr) - 4] = 0;
 			}
 
 			scriptHandles.push_back(ScriptHandle());
 			ScriptHandle* handle = &scriptHandles[scriptHandles.size() - 1];
 
-			handle->name = va("scripts/%s", list[i]);
+			handle->name = entry;
 			handle->function = "init";
 
 			if (Functions::Scr_LoadScriptInternal(SCRIPTINSTANCE_SERVER, handle->name.data()))
@@ -163,8 +180,6 @@ namespace Script
 				Global::Dependency::Import::Com_Printf(0, "Failed to load script '%s'", handle->name.data());
 			}
 		}
-
-		Functions::FS_FreeFileList(list, 0xC);
 	}
 
 	void RunCustomScripts()
@@ -224,9 +239,6 @@ namespace Script
 		QCALL(Addresses::scriptParseTreeLoad2_loc, Scr_LoadScriptInternal_Stub, QPATCH_CALL);
 		QCALL(Addresses::scriptParseTreeLoad3_loc, Scr_LoadScriptInternal_Stub, QPATCH_CALL);
 		QCALL(Addresses::scriptParseTreeLoad4_loc, Scr_LoadScriptInternal_Stub, QPATCH_CALL);
-
-		// No support for zombies right now
-		if (Global::Game::Type == GAME_TYPE_ZM) return;
 
 		// Load custom scripts
 		loadGameTypeScript_hook.Initialize(Addresses::loadGameTypeScript_loc, LoadGameTypeScript_Stub);

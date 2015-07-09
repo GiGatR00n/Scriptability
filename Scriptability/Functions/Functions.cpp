@@ -33,7 +33,7 @@ void Functions::Assign()
 		Functions::FS_FreeFile = (FS_FreeFile_t)0x40C030;
 		Functions::FS_FOpenFileByMode = (FS_FOpenFileByMode_t)0x699780;
 
-		Functions::Scr_ExecThread = (Scr_ExecThread_t)0x0;
+		Functions::Scr_ExecThread = (Scr_ExecThread_t)0x489040;
 
 		break;
 	}
@@ -57,7 +57,7 @@ void Functions::Assign()
 		Functions::FS_FreeFile = (FS_FreeFile_t)0x5A2220;
 		Functions::FS_FOpenFileByMode = (FS_FOpenFileByMode_t)0x498F50;
 
-		Functions::Scr_ExecThread = (Scr_ExecThread_t)0x0;
+		Functions::Scr_ExecThread = (Scr_ExecThread_t)0x436DA0;
 		break;
 	}
 
@@ -96,4 +96,19 @@ void Functions::AssignFromPattern()
 bool Functions::FS_FileExists(const char* file)
 {
 	return (Functions::FS_FOpenFileByMode(file, 0, FS_READ) > 0);
+}
+
+void Functions::FS_VectoredListFiles(const char *path, const char *extension, FsListBehavior_e behavior, std::vector<std::string> &vector, bool absolute, bool append)
+{
+	if (!append) vector.clear();
+
+	int count = 0;
+	const char** list = Functions::FS_ListFiles(path, extension, behavior, &count, 0xC);
+
+	for (int i = 0; i < count; i++)
+	{
+		vector.push_back(va("%s%s", (absolute ? path : ""), list[i]));
+	}
+
+	Functions::FS_FreeFileList(list, 0xC);
 }

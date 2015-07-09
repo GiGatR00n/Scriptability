@@ -18,8 +18,8 @@ void Addresses::Assign()
 	{
 	case GAME_VERSION_39:
 	{
-		Addresses::loadGameTypeScript_loc = 0;
-		Addresses::loadGameType_loc = 0;
+		Addresses::loadGameTypeScript_loc = 0x6450F0;
+		Addresses::loadGameType_loc = 0x6C129D;
 		break;
 	}
 
@@ -32,8 +32,8 @@ void Addresses::Assign()
 
 	case GAME_VERSION_41:
 	{
-		Addresses::loadGameTypeScript_loc = 0;
-		Addresses::loadGameType_loc = 0;
+		Addresses::loadGameTypeScript_loc = 0x47E0E0;
+		Addresses::loadGameType_loc = 0x67F02D;
 		break;
 	}
 
