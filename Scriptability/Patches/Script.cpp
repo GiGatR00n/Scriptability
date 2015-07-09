@@ -241,6 +241,11 @@ namespace Script
 		QCALL(Addresses::scriptParseTreeLoad3_loc, Scr_LoadScriptInternal_Stub, QPATCH_CALL);
 		QCALL(Addresses::scriptParseTreeLoad4_loc, Scr_LoadScriptInternal_Stub, QPATCH_CALL);
 
+		// Allow precaching after game initialization
+		QNOP(Addresses::precacheInitCheck1_loc, 6);
+		QNOP(Addresses::precacheInitCheck2_loc, 6);
+		QNOP(Addresses::precacheInitCheck3_loc, 6);
+
 		// Load custom scripts
 		loadGameTypeScript_hook.Initialize(Addresses::loadGameTypeScript_loc, LoadGameTypeScript_Stub);
 		loadGameTypeScript_hook.InstallHook();

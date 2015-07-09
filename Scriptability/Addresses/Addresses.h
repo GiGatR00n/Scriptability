@@ -11,6 +11,10 @@ public:
 
 	static DWORD scriptErrorParam_loc;
 
+	static DWORD precacheInitCheck1_loc;
+	static DWORD precacheInitCheck2_loc;
+	static DWORD precacheInitCheck3_loc;
+
 	static void Assign();
 	static void AssignFromPattern();
 };
