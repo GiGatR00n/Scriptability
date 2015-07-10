@@ -12,10 +12,13 @@ namespace Compiler
 {
     class Program
     {
-        [STAThread]
         static int Main(string[] args)
         {
-            if (args.Length >= 3)
+            if(args.Length == 1)
+            {
+                ParseSingleFile(args[0]);
+            }
+            else if (args.Length >= 3)
             {
                 return ParseFile(args[0], args[1], args[2]);
             }
@@ -48,6 +51,25 @@ namespace Compiler
             }
 
             return result;
+        }
+
+        static void ParseSingleFile(string file)
+        {
+            string dest = file.Substring(file.LastIndexOfAny(new char[] { '/', '\\' }) + 1);
+            string destPath = Path.GetFileNameWithoutExtension(file) + "-compiled.gsc";
+
+            var grammar = new GSCGrammar();
+            var parser = new Parser(grammar);
+            var compiler = new ScriptCompiler(parser.Parse(File.ReadAllText(file)), dest);
+
+            if (compiler.Init(dest.Substring(0, dest.IndexOf(".")), true))
+            {
+                using (var writer = File.Create(destPath))
+                {
+                    writer.Write(compiler.Compiled, 0, compiler.Compiled.Length);
+                    writer.Dispose();
+                }
+            }
         }
     }
 }

@@ -180,12 +180,19 @@ namespace Compiler
             }
         }
 
-        public bool Init(string rel)
+        public bool Init(string rel, bool poperrormessage = false)
         {
             if (Tree.ParserMessages.Count > 0)
             {
-                CompiledPub.Clear();
-                AddString(String.Format("Bad syntax in line {0}.", Tree.ParserMessages[0].Location.Line));
+                if (poperrormessage)
+                {
+                    MessageBox.Show(String.Format("Bad syntax in line {0}.", Tree.ParserMessages[0].Location.Line));
+                }
+                else
+                {
+                    CompiledPub.Clear();
+                    AddString(String.Format("Bad syntax in line {0}.", Tree.ParserMessages[0].Location.Line));
+                }
                 return false;
             }
 
