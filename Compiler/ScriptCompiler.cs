@@ -12,7 +12,7 @@ namespace Compiler
     {
         private readonly ParseTree Tree;
         public static List<byte> CompiledPub = new List<byte>();
-        private readonly List<GlobalString> GlobalStrings = new List<GlobalString>();
+        private readonly Dictionary<string, ushort> GlobalStrings = new Dictionary<string, ushort>();
         private readonly List<RefString> RefStrings = new List<RefString>();
         private readonly List<Function> Functions = new List<Function>();
         private readonly List<string> LocalVariables = new List<string>();
@@ -61,7 +61,7 @@ namespace Compiler
         private void AddString(string str)
         {
             CompiledPub.AddRange(Encoding.ASCII.GetBytes(str + '\0'));
-            GlobalStrings.Add(new GlobalString { Str = str, Position = (ushort)(CompiledPub.Count - str.Length - 1) });
+            GlobalStrings.Add(str, (ushort)(CompiledPub.Count - str.Length - 1));
         }
 
         private void AddRefToCall(string name, byte numofParams, byte flag, ushort include)
@@ -1639,8 +1639,8 @@ namespace Compiler
 
         public class GlobalString
         {
-            public string Str { get; set; }
-            public ushort Position { get; set; }
+            public string Str;
+            public ushort Position;
         }
 
         public class Key
