@@ -1464,14 +1464,15 @@ namespace Compiler
 
         private ushort GetStringPosByName(string str)
         {
-            return
-                (from globalString in GlobalStrings where globalString.Str == str select globalString.Position)
-                    .FirstOrDefault();
+            if (GlobalStrings.ContainsKey(str))
+                return GlobalStrings[str];
+
+            return 0;
         }
 
         private bool StringShouldBeWritten(string str)
         {
-            return GlobalStrings.All(globalString => globalString.Str != str && !IsObjectOwnerOrBuiltIn(str));
+            return GlobalStrings.All(globalString => globalString.Key != str && !IsObjectOwnerOrBuiltIn(str));
         }
 
         private bool IsObjectOwnerOrBuiltIn(string str)
