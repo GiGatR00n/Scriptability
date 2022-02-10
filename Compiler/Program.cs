@@ -23,7 +23,7 @@ namespace Compiler
                 return ParseFile(args[0], args[1], args[2]);
             }
 
-            return 1;
+            return 0;
         }
 
         private static IEnumerable<string> ParseAllFiles(string path)
